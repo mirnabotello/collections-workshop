@@ -10,7 +10,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.encora.data.Car;
@@ -19,6 +21,8 @@ import com.opencsv.bean.CsvToBeanBuilder;
 public class CarTest {
 
     private static List<Car> cars;
+    private long startTime;
+    private long endTime;
 
     @BeforeAll
     static void setup() throws IOException {
@@ -35,9 +39,21 @@ public class CarTest {
         });
     }
 
+    @BeforeEach
+    void startTime(){
+        startTime = System.nanoTime();
+    }
+
+    @AfterEach
+    void endTime() {
+        endTime = System.nanoTime();
+        System.out.println("Time to process: " + (endTime - startTime)/1000000);
+    }
+
     @Test
     void validateCarsCount()
     {
         assertEquals(10000, cars.size());
     }
+
 }
