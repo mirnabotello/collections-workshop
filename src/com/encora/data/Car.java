@@ -1,6 +1,9 @@
 package com.encora.data;
 
-public class Car {
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+public class Car implements Comparable<Car>{
     private String vin;
     private String brand;
     private String model;
@@ -45,5 +48,26 @@ public class Car {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (!(o instanceof Car)) return false;
+
+        Car car = (Car) o;
+
+        return new EqualsBuilder().append(vin, car.vin).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(vin).toHashCode();
+    }
+
+    @Override
+    public int compareTo(Car car) {
+        return this.vin.compareTo(car.getVin());
     }
 }

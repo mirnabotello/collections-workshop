@@ -1,6 +1,8 @@
 package com.encora;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -8,8 +10,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -17,6 +22,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.encora.data.Car;
+import com.encora.data.CarComparator;
 import com.encora.data.Person;
 import com.encora.data.Relation;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -86,4 +92,84 @@ public class CarTest {
         assertEquals(7000, relations.size());
     }
 
+    @Test
+    void searchCarVin(){
+        boolean found = false;
+
+        for (int i = 0; i < 10000; i++) {
+            for (Car car : cars) {
+                if (car.getVin().equals("asdfsadfasddasf")) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+
+        assertFalse(found);
+    }
+
+    @Test
+    void searchCarVinHashSet() {
+        creationStartTime = System.nanoTime();
+        Set<Car> carSet = new HashSet<>(cars);
+        creationEndTime = System.nanoTime();
+
+        Car car = new Car();
+        car.setVin("oifisfusadufosduf");
+
+        for (int i = 0; i < 10000; i++) {
+            carSet.contains(car);
+        }
+
+    }
+
+    @Test
+    void searchCarVinTreeSet() {
+        creationStartTime = System.nanoTime();
+        Set<Car> carSet = new TreeSet<>(cars);
+        creationEndTime = System.nanoTime();
+
+        Car car = new Car();
+        car.setVin("oifisfusadufosduf");
+
+        for (int i = 0; i < 10000; i++) {
+            carSet.contains(car);
+        }
+    }
+
+    @Test
+    void printVinInHashSet()
+    {
+        creationStartTime = System.nanoTime();
+        Set<Car> carSet = new HashSet<>(cars);
+        creationEndTime = System.nanoTime();
+
+        for (Car car : carSet) {
+            System.out.println(car.getVin());
+        }
+    }
+    @Test
+    void printVinInTreeSet()
+    {
+        creationStartTime = System.nanoTime();
+        Set<Car> carSet = new TreeSet<>(cars);
+        creationEndTime = System.nanoTime();
+
+        for (Car car : carSet) {
+            System.out.println(car.getVin());
+        }
+    }
+
+    @Test
+    void printVinInTreeSetComparator()
+    {
+        creationStartTime = System.nanoTime();
+        Set<Car> carSet = new TreeSet<>(new CarComparator().reversed());
+        carSet.addAll(cars);
+        creationEndTime = System.nanoTime();
+
+        for (Car car : carSet) {
+            System.out.println(car.getVin());
+        }
+    }
 }
