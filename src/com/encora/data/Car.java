@@ -1,5 +1,10 @@
 package com.encora.data;
 
+import java.util.Objects;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 public class Car {
     private String vin;
     private String brand;
@@ -45,5 +50,20 @@ public class Car {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Car)) return false;
+
+        Car car = (Car) o;
+
+        return Objects.equals(vin, car.vin);
+    }
+
+    @Override
+    public int hashCode() {
+        return vin != null ? vin.hashCode() : 0;
     }
 }

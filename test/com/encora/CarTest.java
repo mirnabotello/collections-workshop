@@ -1,6 +1,7 @@
 package com.encora;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -8,8 +9,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -86,4 +89,48 @@ public class CarTest {
         assertEquals(7000, relations.size());
     }
 
+    @Test
+    void findVin()
+    {
+        boolean found = false;
+
+        for(int j = 0; j < 100000; j++) {
+            for (int i = 0; i < cars.size(); i++) {
+                if (cars.get(i).getVin().equals("WBA3A9G50DN112545")) {
+                    found = true;
+                }
+            }
+        }
+    }
+
+    @Test
+    void findVinNotExists()
+    {
+        boolean found = false;
+
+        for(int j = 0; j < 100000; j++) {
+            for (int i = 0; i < cars.size(); i++) {
+                if (cars.get(i).getVin().equals("wrowiqeroiweuroi")) {
+                    found = true;
+                }
+            }
+        }
+    }
+
+    @Test
+    void searchInHashSet()
+    {
+        creationStartTime = System.nanoTime();
+        Set<Car> carSet = new HashSet<>(cars);
+        creationEndTime = System.nanoTime();
+        Car car = new Car();
+        boolean found = false;
+
+        car.setVin("wrowiqeroiweuroi");
+
+        for(int i = 0; i < 100000; i++) {
+            found = carSet.contains(car);
+        }
+        assertTrue(found);
+    }
 }
